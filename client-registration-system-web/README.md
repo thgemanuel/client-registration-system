@@ -10,44 +10,75 @@ Este é o serviço de frontend (Web) do **Client Registration System**. Trata-se
 - **[shadcn/ui](https://ui.shadcn.com/)**: Componentes de interface acessíveis e altamente customizáveis (usando Radix UI).
 - **[React Hook Form](https://react-hook-form.com/) & [Zod](https://zod.dev/)**: Para gerenciamento de estado complexo de formulários e validação rigorosa de schemas.
 - **[Turbopack](https://turbo.build/pack)**: Sucessor do Webpack, ativado para tempos de build de desenvolvimento ultrarrápidos.
+- **[Jest](https://jestjs.io/) & [Testing Library](https://testing-library.com/)**: Framework de testes unitários e de componentes.
 - **[Cypress](https://www.cypress.io/)**: Ferramenta de testes End-to-End (E2E) simulando comportamento de usuários reais.
 
 ## 📋 Pré-requisitos
 Antes de iniciar, você precisará ter instalado em sua máquina:
-- O serviço de API já configurado e rodando (para que a submissão de formulários seja bem sucedida localmente).
-- [Docker](https://www.docker.com/) e [Docker Compose](https://docs.docker.com/compose/) (Para encapsular todo o ambiente sem Node.js nativo)
-- [Make](https://www.gnu.org/software/make/) (Opcional, atalhos do Makefile)
+- [Docker](https://www.docker.com/) e [Docker Compose](https://docs.docker.com/compose/)
+- [Make](https://www.gnu.org/software/make/) *(opcional, mas recomendado)*
+- O serviço de API já configurado e rodando (necessário para o fluxo de submissão do formulário)
+
+> **Não é necessário ter Node.js instalado na máquina.** Todo o ambiente roda dentro de containers Docker.
 
 ## 🛠️ Como Executar
 
 ### Utilizando o `Makefile` (Recomendado)
-Na raiz do repositório, existe um `Makefile` configurado para facilitar a vida do desenvolvedor orquestrando os comandos de todos os projetos. A partir da **pasta raiz do projeto**, execute:
+A partir da **pasta raiz do repositório** (`client-registration-system/`):
 
-1. **Instalar Dependências da Web (via Docker):**
-   ```bash
-   make install
-   ```
-2. **Iniciar o Web App e a API em modo de desenvolvimento simultâneos:**
-   ```bash
-   make dev
-   ```
-3. **Rodar os Testes E2E (Cypress) no Terminal via Docker:**
-   ```bash
-   make test-e2e
-   ```
+```bash
+# Sobe apenas o Web App (a API deve estar rodando)
+make dev-web
+
+# Sobe Web + API juntos (recomendado para desenvolvimento completo)
+make dev
+```
 
 ### Executando Manualmente (Sem o `Makefile`)
-Caso prefira não usar o Makefile, você pode utilizar o docker-compose diretamente da raiz do repositório.
+```bash
+# Sobe a interface web em modo dev
+docker-compose up -d web
 
-1. **Subir a interface web juntamente com os serviços em modo watch:**
-   A partir da pasta raiz:
-   ```bash
-   docker-compose up -d web
-   ```
-2. **Executar Testes Cypress no Terminal:**
-   ```bash
-   docker-compose run --rm web npm run test:e2e
-   ```
+# Acompanhar os logs
+docker-compose logs web -f
+```
+
+A aplicação estará disponível em **http://localhost:3001**.
 
 ---
-*A aplicação web estará disponível por padrão em `http://localhost:3000` (ou na porta 3001, dependendo se a porta 3000 já estiver em uso pela API).*
+
+## 🧪 Testes
+
+### Configuração
+
+O Web usa **Jest** integrado ao **Next.js** (`next/jest`) com ambiente **jsdom** para simular o browser. O **Testing Library** é utilizado para renderização e interação com componentes React. Os testes E2E são escritos com **Cypress**.
+
+- **Configuração Jest**: `jest.config.ts` (usa `createJestConfig` do Next.js para suporte a imports, variáveis de ambiente e path aliases)
+- **Setup**: `jest.setup.ts` (importa `@testing-library/jest-dom` para matchers customizados)
+- **Alias de módulos**: `@/*` mapeado para `src/*`
+- **E2E ignorados pelo Jest**: o padrão `tests/e2e/` é excluído — Cypress roda separadamente
+
+### Suites de Testes
+
+| Suite | Caminho | Tipo | O que testa |
+|-------|---------|------|-------------|
+| `formatters` | `src/shared/utils/formatters.spec.ts` | Unitário | `formatCpf`: CPF completo, digitação parcial, remoção de caracteres não-numéricos, truncamento, input vazio |
+| `Client Schema` | `src/app/[locale]/cadastro/schemas/client.schema.spec.ts` | Unitário | Validação Zod: campos obrigatórios, CPF algoritmo, e-mail, cor inválida, observations, strip de máscara do CPF, todas as cores válidas |
+| `createClientAction` | `src/server-actions/client-registration-system-api/create-client/create-client.spec.ts` | Unitário | Server Action: resposta de sucesso (201), erro da API (4xx), erro de rede |
+| `ClientRegistrationForm` | `src/app/[locale]/cadastro/components/ClientRegistrationForm.spec.tsx` | Componente | Renderização de campos e placeholders, erros de validação ao submeter vazio, bloqueio de submit sem cor |
+
+### Comandos
+
+```bash
+# Testes unitários e de componentes (via Makefile raiz)
+make test
+
+# Testes unitários e de componentes (via docker-compose direto)
+docker-compose run --rm web npm run test
+
+# Testes E2E com Cypress (requer API + Web rodando)
+make test-e2e
+
+# Testes E2E (via docker-compose direto)
+docker-compose run --rm web npm run test:e2e
+```

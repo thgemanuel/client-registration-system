@@ -6,6 +6,7 @@ import { RegisterClientDTO } from '@application/dto/create-client.dto';
 import { ClientResponseDTO } from '@application/dto/client-response.dto';
 import { RainbowColorEnum } from '@domain/enums/rainbow-color.enum';
 import { ClientAlreadyExistsException } from '@domain/exceptions/client-already-exists.exception';
+import { ClientEmailAlreadyExistsException } from '@domain/exceptions/client-email-already-exists.exception';
 
 describe('RegisterClientUseCase', () => {
   let useCase: RegisterClientUseCase;
@@ -48,11 +49,13 @@ describe('RegisterClientUseCase', () => {
 
   it('should register a new client and return the response DTO', async () => {
     clientRepository.findByCpf.mockResolvedValue(null);
+    clientRepository.findByEmail.mockResolvedValue(null);
     clientRepository.create.mockResolvedValue(mockCreatedClient);
 
     const result = await useCase.execute(mockDto);
 
     expect(clientRepository.findByCpf).toHaveBeenCalledWith(mockDto.cpf);
+    expect(clientRepository.findByEmail).toHaveBeenCalledWith(mockDto.email);
     expect(clientRepository.create).toHaveBeenCalledTimes(1);
     expect(result.id).toBe(mockCreatedClient.id);
     expect(result.fullName).toBe(mockCreatedClient.fullName);
@@ -66,6 +69,17 @@ describe('RegisterClientUseCase', () => {
 
     await expect(useCase.execute(mockDto)).rejects.toThrow(
       ClientAlreadyExistsException,
+    );
+
+    expect(clientRepository.create).not.toHaveBeenCalled();
+  });
+
+  it('should throw ClientEmailAlreadyExistsException when email is already registered', async () => {
+    clientRepository.findByCpf.mockResolvedValue(null);
+    clientRepository.findByEmail.mockResolvedValue(mockCreatedClient);
+
+    await expect(useCase.execute(mockDto)).rejects.toThrow(
+      ClientEmailAlreadyExistsException,
     );
 
     expect(clientRepository.create).not.toHaveBeenCalled();

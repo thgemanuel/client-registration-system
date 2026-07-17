@@ -86,6 +86,58 @@ docker-compose logs -f
 docker-compose down -v
 ```
 
+## 🧪 Testes
+
+Ambos os projetos possuem suites de testes cobertas com **Jest**. Os testes E2E da API usam **Supertest** e os do Web usam **Cypress**.
+
+### Resumo das Suites
+
+**API** — 9 suites, 47 testes
+
+| Suite | Tipo | Descrição |
+|-------|------|-----------|
+| `ClientMapper` | Unitário | Conversão DTO ↔ Entity |
+| `RegisterClientUseCase` | Unitário | Cadastro, CPF/e-mail duplicado |
+| `GetClientsUseCase` | Unitário | Listagem de clientes |
+| `GetClientByIdUseCase` | Unitário | Busca por ID e not found |
+| `UpdateClientUseCase` | Unitário | Atualização parcial, e-mail duplicado, not found |
+| `DeleteClientUseCase` | Unitário | Deleção e not found |
+| `ClientController` | Unitário | Todos os 5 endpoints CRUD |
+| `DomainExceptionFilter` | Unitário | Mapeamento de exceções de domínio para HTTP 400 |
+| `GeneralExceptionFilter` | Unitário | Tratamento de HttpException e erros genéricos (500) |
+| `ClientController (E2E)` | E2E | CRUD completo via HTTP com banco de dados real |
+
+**Web** — 4 suites, 28 testes
+
+| Suite | Tipo | Descrição |
+|-------|------|-----------|
+| `formatters` | Unitário | Utilitário `formatCpf` (formatação, máscara, edge cases) |
+| `Client Schema` | Unitário | Validação Zod: todos os campos, CPF algoritmo, strip de máscara |
+| `createClientAction` | Unitário | Server Action: sucesso, erro da API, erro de rede |
+| `ClientRegistrationForm` | Componente | Renderização de campos, erros de validação, bloqueio de submit |
+
+### Executando os Testes
+
+```bash
+# Todos os testes unitários (API + Web)
+make test
+
+# Testes E2E (API + Web — requer banco de dados)
+make test-e2e
+
+# Apenas API
+docker-compose run --rm api npm run test
+
+# Apenas Web
+docker-compose run --rm web npm run test
+```
+
+> Consulte os READMEs individuais de cada projeto para detalhes sobre a configuração e os arquivos de cada suite:
+> - [API — Seção de Testes](./client-registration-system-api/README.md#-testes)
+> - [Web — Seção de Testes](./client-registration-system-web/README.md#-testes)
+
+---
+
 ## 🗄️ Banco de Dados
 
 O PostgreSQL é iniciado automaticamente via Docker. As credenciais padrão (para ambiente local) são:
@@ -97,3 +149,4 @@ O PostgreSQL é iniciado automaticamente via Docker. As credenciais padrão (par
 | Banco | `client-registration-service` |
 | Usuário | `client-registration-service` |
 | Senha | `client-registration-service` |
+
