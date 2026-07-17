@@ -3,6 +3,7 @@ import { ClientMapper } from '@application/mappers/client.mapper';
 import { ClientRepository } from '@domain/repositories/client.repository';
 import { Client } from '@domain/entities/client.entity';
 import { RegisterClientDTO } from '@application/dto/create-client.dto';
+import { ClientResponseDTO } from '@application/dto/client-response.dto';
 import { RainbowColorEnum } from '@domain/enums/rainbow-color.enum';
 import { ClientAlreadyExistsException } from '@domain/exceptions/client-already-exists.exception';
 
@@ -33,7 +34,12 @@ describe('RegisterClientUseCase', () => {
     clientRepository = {
       create: jest.fn(),
       findByCpf: jest.fn(),
-    };
+      findByEmail: jest.fn(),
+      findAll: jest.fn(),
+      findById: jest.fn(),
+      update: jest.fn(),
+      delete: jest.fn(),
+    } as unknown as jest.Mocked<ClientRepository>;
 
     clientMapper = new ClientMapper();
 

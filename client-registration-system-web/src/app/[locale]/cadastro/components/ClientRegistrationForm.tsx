@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { formatCpf } from "@/shared/utils/formatters";
 
 import { getClientRegistrationSchema, RainbowColor } from "../schemas/client.schema";
 import { ClientRegistrationInput } from "../types/client.types";
@@ -135,7 +136,15 @@ export function ClientRegistrationForm() {
                     <Input
                       placeholder={tForm("cpfPlaceholder")}
                       maxLength={14}
-                      {...field}
+                      value={field.value}
+                      onChange={(e) => {
+                        const formatted = formatCpf(e.target.value);
+                        field.onChange(formatted);
+                      }}
+                      name={field.name}
+                      onBlur={field.onBlur}
+                      ref={field.ref}
+                      disabled={field.disabled}
                     />
                   </FormControl>
                   <FormMessage />
@@ -172,7 +181,9 @@ export function ClientRegistrationForm() {
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder={tForm("favoriteColorPlaceholder")} />
+                        <SelectValue placeholder={tForm("favoriteColorPlaceholder")}>
+                          {field.value ? tColors(field.value) : tForm("favoriteColorPlaceholder")}
+                        </SelectValue>
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -201,6 +212,7 @@ export function ClientRegistrationForm() {
                     <Textarea
                       placeholder={tForm("observationsPlaceholder")}
                       rows={3}
+                      className="resize-none"
                       {...field}
                     />
                   </FormControl>

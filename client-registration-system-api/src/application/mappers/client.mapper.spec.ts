@@ -2,7 +2,7 @@ import { ClientMapper } from '@application/mappers/client.mapper';
 import { RegisterClientDTO } from '@application/dto/create-client.dto';
 import { Client } from '@domain/entities/client.entity';
 import { RainbowColorEnum } from '@domain/enums/rainbow-color.enum';
-import { RegisterClientResponseDTO } from '@application/dto/create-client-response.dto';
+import { ClientResponseDTO } from '@application/dto/client-response.dto';
 
 describe('ClientMapper', () => {
   let mapper: ClientMapper;
@@ -42,24 +42,27 @@ describe('ClientMapper', () => {
     });
 
     it('should map DTO without optional observations', () => {
-      const dtoWithoutObs: RegisterClientDTO = { ...mockDto, observations: undefined };
+      const dtoWithoutObs: RegisterClientDTO = {
+        ...mockDto,
+        observations: undefined,
+      };
       const result = mapper.parseToEntity(dtoWithoutObs);
 
       expect(result.observations).toBeUndefined();
     });
 
     it('should return null when dto is null', () => {
-      const result = mapper.parseToEntity(null as any);
+      const result = mapper.parseToEntity(null);
 
       expect(result).toBeNull();
     });
   });
 
   describe('parseToDTO', () => {
-    it('should map a Client entity to a RegisterClientResponseDTO', () => {
+    it('should map a Client entity to a ClientResponseDTO', () => {
       const result = mapper.parseToDTO(mockClient);
 
-      expect(result).toBeInstanceOf(RegisterClientResponseDTO);
+      expect(result).toBeInstanceOf(ClientResponseDTO);
       expect(result.id).toBe(mockClient.id);
       expect(result.fullName).toBe(mockClient.fullName);
       expect(result.cpf).toBe(mockClient.cpf);
@@ -70,7 +73,7 @@ describe('ClientMapper', () => {
     });
 
     it('should return null when client is null', () => {
-      const result = mapper.parseToDTO(null as any);
+      const result = mapper.parseToDTO(null);
 
       expect(result).toBeNull();
     });

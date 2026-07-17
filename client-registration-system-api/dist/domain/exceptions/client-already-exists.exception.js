@@ -4,7 +4,7 @@ exports.ClientAlreadyExistsException = void 0;
 const domain_exception_1 = require("./domain.exception");
 class ClientAlreadyExistsException extends domain_exception_1.DomainException {
     constructor() {
-        super(['Um cliente com este CPF já está cadastrado.']);
+        super(['Este CPF já está cadastrado']);
         this.name = ClientAlreadyExistsException.name;
     }
 }

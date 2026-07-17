@@ -1,0 +1,67 @@
+services:
+  postgres:
+    image: postgres:14
+    container_name: client-registration-database
+    restart: always
+    environment:
+      - POSTGRES_USER=client-registration-service
+      - POSTGRES_PASSWORD=client-registration-service
+      - POSTGRES_DB=client-registration-service
+    ports:
+      - ${BIND_DB_PORT:-5432}:5432
+    networks:
+      - guideline
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U client-registration-service -d client-registration-service"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./client-registration-system-api
+      dockerfile: .docker/build/Dockerfile
+      target: build
+    container_name: client-registration-api
+    command: npm run start:dev
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./client-registration-system-api:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - ${BIND_PORT_API:-3000}:3000
+    environment:
+      - DATABASE_URL=postgres://client-registration-service:client-registration-service@postgres:5432/client-registration-service
+      - PORT=3000
+    networks:
+      - guideline
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  web:
+    build:
+      context: ./client-registration-system-web
+      dockerfile: .docker/build/Dockerfile
+      target: deps
+    container_name: client-registration-web
+    command: npm run dev
+    volumes:
+      - ./client-registration-system-web:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - ${BIND_PORT_WEB:-3001}:3001
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:3000
+      - PORT=3001
+    networks:
+      - guideline
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+networks:
+  guideline:
+    external: true
+    name: guideline

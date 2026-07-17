@@ -40,7 +40,9 @@ export class RegisterClientDTO {
    * Cor preferida do cliente (cores do arco-íris).
    * @example 'blue'
    */
-  @IsNotEmpty({ message: 'O campo favoriteColor (cor preferida) é obrigatório.' })
+  @IsNotEmpty({
+    message: 'O campo favoriteColor (cor preferida) é obrigatório.',
+  })
   @IsEnum(RainbowColorEnum, {
     message: `O campo favoriteColor deve ser uma das seguintes cores: ${Object.values(RainbowColorEnum).join(', ')}.`,
   })

@@ -6,78 +6,80 @@ WEB_PORT=3001
 DB_URL=postgres://client-registration-service:client-registration-service@localhost:5432/client-registration-service
 
 ##
-## dev: Executa API e Web localmente em modo dev (em paralelo)
+## dev: Executa API e Web localmente em containers dev
 ##
 .PHONY: dev
-dev:
-	@echo "Iniciando API (porta $(API_PORT)) e Web (porta $(WEB_PORT)) em modo dev..."
-	@$(MAKE) -j2 dev-api dev-web
+dev: run-migrations
+	@echo "Iniciando API e Web via Docker Compose..."
+	docker-compose up -d
 
 ##
-## dev-api: Executa somente a API NestJS em modo watch
+## dev-api: Inicia o container da API em modo watch
 ##
 .PHONY: dev-api
-dev-api: export PORT=$(API_PORT)
-dev-api: export DATABASE_URL=$(DB_URL)
-dev-api:
-	@echo "[API] Iniciando NestJS em modo watch na porta $(API_PORT)..."
-	cd $(API_DIR) && npm run start:dev
+dev-api: run-migrations
+	@echo "[API] Iniciando NestJS via Docker Compose..."
+	docker-compose up -d api postgres
 
 ##
-## dev-web: Executa somente o Next.js em modo dev
+## dev-web: Inicia o container do Web em modo dev
 ##
 .PHONY: dev-web
-dev-web: export PORT=$(WEB_PORT)
-dev-web: export NEXT_PUBLIC_API_URL=http://localhost:$(API_PORT)
 dev-web:
-	@echo "[WEB] Iniciando Next.js em modo dev na porta $(WEB_PORT)..."
-	cd $(WEB_DIR) && npm run dev
+	@echo "[WEB] Iniciando Next.js via Docker Compose..."
+	docker-compose up -d web
 
 ##
-## install: Instala as dependências de ambos os projetos
+## install: Instala as dependências via Docker Compose run
 ##
 .PHONY: install
 install:
-	@echo "Instalando dependências da API..."
-	cd $(API_DIR) && npm install
-	@echo "Instalando dependências do Web..."
-	cd $(WEB_DIR) && npm install
+	@echo "Instalando dependências na API (Docker)..."
+	docker-compose run --rm api npm install
+	@echo "Instalando dependências do Web (Docker)..."
+	docker-compose run --rm web npm install
 
 ##
-## test: Executa testes unitários de ambos os projetos
+## run-migrations: Executa as migrations do TypeORM
+##
+.PHONY: run-migrations
+run-migrations:
+	@echo "Executando migrations do banco de dados (Docker)..."
+	docker-compose run --rm api npm run typeorm:run-migrations
+
+##
+## test: Executa testes unitários de ambos os projetos via Docker
 ##
 .PHONY: test
 test:
-	@echo "Executando testes da API..."
-	cd $(API_DIR) && npm run test
-	@echo "Executando testes do Web..."
-	cd $(WEB_DIR) && npm run test
+	@echo "Executando testes da API (Docker)..."
+	docker-compose run --rm api npm run test
+	@echo "Executando testes do Web (Docker)..."
+	docker-compose run --rm web npm run test
 
 ##
-## test-e2e: Executa testes e2e de ambos os projetos
+## test-e2e: Executa testes e2e de ambos os projetos via Docker
 ##
 .PHONY: test-e2e
-test-e2e:
-	@echo "Executando testes e2e da API..."
-	cd $(API_DIR) && DATABASE_URL=$(DB_URL) npm run test:e2e
-	@echo "Executando testes e2e do Web (Playwright)..."
-	cd $(WEB_DIR) && npm run test:e2e
+test-e2e: run-migrations
+	@echo "Executando testes e2e da API (Docker)..."
+	docker-compose run --rm -e DATABASE_URL=postgres://client-registration-service:client-registration-service@postgres:5432/client-registration-service api npm run test:e2e
+	@echo "Executando testes e2e do Web (Docker)..."
+	docker-compose run --rm web npm run test:e2e
 
 ##
-## run: Sobe ambos os serviços via Docker (modo produção)
+## run: Sobe ambos os serviços via Docker Compose
 ##
 .PHONY: run
-run:
-	@$(MAKE) -C $(API_DIR) run
-	@$(MAKE) -C $(WEB_DIR) run
+run: run-migrations
+	docker-compose up -d
 
 ##
 ## logs: Exibe logs de ambos os serviços Docker
 ##
 .PHONY: logs
 logs:
-	@$(MAKE) -C $(API_DIR) logs &
-	@$(MAKE) -C $(WEB_DIR) logs
+	docker-compose logs -f
 
 ##
 ## help: Lista os alvos disponíveis

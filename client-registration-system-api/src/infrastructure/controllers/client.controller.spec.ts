@@ -2,7 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ClientController } from '@infrastructure/controllers/client.controller';
 import { RegisterClientUseCase } from '@application/use-cases/register-client.use-case';
 import { RegisterClientDTO } from '@application/dto/create-client.dto';
-import { RegisterClientResponseDTO } from '@application/dto/create-client-response.dto';
+import { GetClientsUseCase } from '@application/use-cases/get-clients.use-case';
+import { GetClientByIdUseCase } from '@application/use-cases/get-client-by-id.use-case';
+import { UpdateClientUseCase } from '@application/use-cases/update-client.use-case';
+import { DeleteClientUseCase } from '@application/use-cases/delete-client.use-case';
+import { ClientResponseDTO } from '@application/dto/client-response.dto';
 import { RainbowColorEnum } from '@domain/enums/rainbow-color.enum';
 import { ClientAlreadyExistsException } from '@domain/exceptions/client-already-exists.exception';
 
@@ -17,7 +21,7 @@ describe('ClientController', () => {
     favoriteColor: RainbowColorEnum.RED,
   };
 
-  const mockResponse: RegisterClientResponseDTO = {
+  const mockResponse: ClientResponseDTO = {
     id: '123',
     fullName: 'Test User',
     cpf: '12345678901',
@@ -38,6 +42,22 @@ describe('ClientController', () => {
         {
           provide: RegisterClientUseCase,
           useValue: mockUseCase,
+        },
+        {
+          provide: GetClientsUseCase,
+          useValue: { execute: jest.fn() },
+        },
+        {
+          provide: GetClientByIdUseCase,
+          useValue: { execute: jest.fn() },
+        },
+        {
+          provide: UpdateClientUseCase,
+          useValue: { execute: jest.fn() },
+        },
+        {
+          provide: DeleteClientUseCase,
+          useValue: { execute: jest.fn() },
         },
       ],
     }).compile();

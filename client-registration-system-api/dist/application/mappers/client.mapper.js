@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClientMapper = void 0;
 const common_1 = require("@nestjs/common");
 const client_entity_1 = require("../../domain/entities/client.entity");
-const create_client_response_dto_1 = require("../dto/create-client-response.dto");
+const client_response_dto_1 = require("../dto/client-response.dto");
 let ClientMapper = class ClientMapper {
     parseToEntity(dto) {
         if (!dto)
@@ -25,7 +25,7 @@ let ClientMapper = class ClientMapper {
     parseToDTO(client) {
         if (!client)
             return null;
-        const response = new create_client_response_dto_1.RegisterClientResponseDTO();
+        const response = new client_response_dto_1.ClientResponseDTO();
         response.id = client.id;
         response.fullName = client.fullName;
         response.cpf = client.cpf;

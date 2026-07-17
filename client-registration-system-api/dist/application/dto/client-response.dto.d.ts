@@ -1,5 +1,5 @@
 import { RainbowColorEnum } from "../../domain/enums/rainbow-color.enum";
-export declare class RegisterClientResponseDTO {
+export declare class ClientResponseDTO {
     id: string;
     fullName: string;
     cpf: string;

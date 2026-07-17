@@ -34,7 +34,9 @@ __decorate([
     __metadata("design:type", String)
 ], RegisterClientDTO.prototype, "email", void 0);
 __decorate([
-    (0, class_validator_1.IsNotEmpty)({ message: 'O campo favoriteColor (cor preferida) é obrigatório.' }),
+    (0, class_validator_1.IsNotEmpty)({
+        message: 'O campo favoriteColor (cor preferida) é obrigatório.',
+    }),
     (0, class_validator_1.IsEnum)(rainbow_color_enum_1.RainbowColorEnum, {
         message: `O campo favoriteColor deve ser uma das seguintes cores: ${Object.values(rainbow_color_enum_1.RainbowColorEnum).join(', ')}.`,
     }),

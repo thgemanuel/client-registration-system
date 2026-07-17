@@ -38,8 +38,6 @@ export class CreateClientsTable1721176800000 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`DROP TABLE "clients"`);
-    await queryRunner.query(
-      `DROP TYPE "public"."clients_favorite_color_enum"`,
-    );
+    await queryRunner.query(`DROP TYPE "public"."clients_favorite_color_enum"`);
   }
 }

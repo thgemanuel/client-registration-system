@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const client_repository_1 = require("../../domain/repositories/client.repository");
 const client_mapper_1 = require("../mappers/client.mapper");
 const client_already_exists_exception_1 = require("../../domain/exceptions/client-already-exists.exception");
+const client_email_already_exists_exception_1 = require("../../domain/exceptions/client-email-already-exists.exception");
 let RegisterClientUseCase = class RegisterClientUseCase {
     constructor(clientRepository, clientMapper) {
         this.clientRepository = clientRepository;
@@ -26,6 +27,10 @@ let RegisterClientUseCase = class RegisterClientUseCase {
         const existingClient = await this.clientRepository.findByCpf(dto.cpf);
         if (existingClient) {
             throw new client_already_exists_exception_1.ClientAlreadyExistsException();
+        }
+        const emailExists = await this.clientRepository.findByEmail(dto.email);
+        if (emailExists) {
+            throw new client_email_already_exists_exception_1.ClientEmailAlreadyExistsException();
         }
         const client = this.clientMapper.parseToEntity(dto);
         const createdClient = await this.clientRepository.create(client);

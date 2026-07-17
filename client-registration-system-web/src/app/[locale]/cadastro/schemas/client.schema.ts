@@ -20,7 +20,8 @@ export const getClientRegistrationSchema = (t: (key: string) => string) => z.obj
   cpf: z
     .string()
     .min(1, t('cpfRequired'))
-    .refine((val) => cpfValidator.isValid(val), t('cpfInvalid')),
+    .refine((val) => cpfValidator.isValid(val), t('cpfInvalid'))
+    .transform(val => val.replace(/[^\d]/g, '')),
 
   email: z
     .string()

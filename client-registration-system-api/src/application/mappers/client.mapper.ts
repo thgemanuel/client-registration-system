@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Client } from '@domain/entities/client.entity';
 import { RegisterClientDTO } from '@application/dto/create-client.dto';
-import { RegisterClientResponseDTO } from '@application/dto/create-client-response.dto';
+import { ClientResponseDTO } from '@application/dto/client-response.dto';
 
 @Injectable()
 export class ClientMapper {
@@ -18,10 +18,10 @@ export class ClientMapper {
     return client;
   }
 
-  parseToDTO(client: Client): RegisterClientResponseDTO {
+  parseToDTO(client: Client): ClientResponseDTO {
     if (!client) return null;
 
-    const response = new RegisterClientResponseDTO();
+    const response = new ClientResponseDTO();
     response.id = client.id;
     response.fullName = client.fullName;
     response.cpf = client.cpf;

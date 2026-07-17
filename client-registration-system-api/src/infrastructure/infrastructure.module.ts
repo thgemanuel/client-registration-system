@@ -18,15 +18,8 @@ import { mappers } from './persistence/postgres/mappers';
     TypeOrmModule.forFeature(schemas),
     ApplicationModule,
   ],
-  providers: [
-    Logger,
-    ...repositories,
-    ...mappers,
-  ],
-  exports: [
-    ...repositories.map((repo) => repo.provide),
-    Logger,
-  ],
+  providers: [Logger, ...repositories, ...mappers],
+  exports: [...repositories.map((repo) => repo.provide), Logger],
   controllers: [ClientController],
 })
 export class InfrastructureModule {}

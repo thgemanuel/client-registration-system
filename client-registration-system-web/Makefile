@@ -15,14 +15,14 @@ logs:
 logs-app:
 	@docker compose logs $(SERVICE_NAME) -f
 
-test: setup
-	@docker compose run --rm $(SERVICE_NAME) npm run test
+test:
+	npm run test
 
-test-e2e: setup
-	@docker compose run --rm $(SERVICE_NAME) npm run test:e2e
+test-e2e:
+	npm run test:e2e
 
 lint:
-	@docker compose run --rm $(SERVICE_NAME) npm run lint
+	npm run lint
 
 create-guideline-network:
 ifeq (,$(shell docker network ls -q --filter name=$(GUIDELINE_NETWORK)))

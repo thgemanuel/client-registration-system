@@ -38,6 +38,32 @@ let ClientRepositoryTypeORM = class ClientRepositoryTypeORM {
             return null;
         return this.clientPersistenceMapper.fromSchemaToEntity(clientSchema);
     }
+    async findByEmail(email) {
+        const clientSchema = await this.typeOrmRepository.findOne({
+            where: { email },
+        });
+        if (!clientSchema)
+            return null;
+        return this.clientPersistenceMapper.fromSchemaToEntity(clientSchema);
+    }
+    async findAll() {
+        const schemas = await this.typeOrmRepository.find();
+        return schemas.map((schema) => this.clientPersistenceMapper.fromSchemaToEntity(schema));
+    }
+    async findById(id) {
+        const schema = await this.typeOrmRepository.findOne({ where: { id } });
+        if (!schema)
+            return null;
+        return this.clientPersistenceMapper.fromSchemaToEntity(schema);
+    }
+    async update(client) {
+        let schema = this.clientPersistenceMapper.fromEntityToSchema(client);
+        schema = await this.typeOrmRepository.save(schema, { reload: true });
+        return this.clientPersistenceMapper.fromSchemaToEntity(schema);
+    }
+    async delete(id) {
+        await this.typeOrmRepository.delete(id);
+    }
 };
 exports.ClientRepositoryTypeORM = ClientRepositoryTypeORM;
 exports.ClientRepositoryTypeORM = ClientRepositoryTypeORM = __decorate([

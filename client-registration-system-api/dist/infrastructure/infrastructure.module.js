@@ -30,15 +30,8 @@ exports.InfrastructureModule = InfrastructureModule = __decorate([
             typeorm_1.TypeOrmModule.forFeature(schemas_1.schemas),
             application_module_1.ApplicationModule,
         ],
-        providers: [
-            common_1.Logger,
-            ...repositories_1.repositories,
-            ...mappers_1.mappers,
-        ],
-        exports: [
-            ...repositories_1.repositories.map((repo) => repo.provide),
-            common_1.Logger,
-        ],
+        providers: [common_1.Logger, ...repositories_1.repositories, ...mappers_1.mappers],
+        exports: [...repositories_1.repositories.map((repo) => repo.provide), common_1.Logger],
         controllers: [client_controller_1.ClientController],
     })
 ], InfrastructureModule);

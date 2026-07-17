@@ -1,6 +1,6 @@
 import { RainbowColorEnum } from '@domain/enums/rainbow-color.enum';
 
-export class RegisterClientResponseDTO {
+export class ClientResponseDTO {
   /**
    * Id do cliente cadastrado.
    * @example 'da771fe7-0095-4404-8afb-f7c895eba0b7'

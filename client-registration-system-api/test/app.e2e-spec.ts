@@ -18,20 +18,22 @@ describe('ClientController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    
+
     const logger = new Logger('Test');
     app.useGlobalPipes(customExceptionFactoryValidationPipe());
     app.useGlobalFilters(
       new GeneralExceptionFilter(logger),
       new DomainExceptionFilter(logger),
     );
-    
+
     await app.init();
   });
 
   it('/clients (POST) - should create a client', async () => {
-    const uniqueCpf = Math.floor(10000000000 + Math.random() * 90000000000).toString().substring(0, 11);
-    
+    const uniqueCpf = Math.floor(10000000000 + Math.random() * 90000000000)
+      .toString()
+      .substring(0, 11);
+
     const dto = {
       fullName: 'E2E Test User',
       cpf: uniqueCpf,
@@ -51,8 +53,10 @@ describe('ClientController (e2e)', () => {
   });
 
   it('/clients (POST) - should return 400 for duplicate CPF', async () => {
-    const uniqueCpf = Math.floor(10000000000 + Math.random() * 90000000000).toString().substring(0, 11);
-    
+    const uniqueCpf = Math.floor(10000000000 + Math.random() * 90000000000)
+      .toString()
+      .substring(0, 11);
+
     const dto = {
       fullName: 'E2E Duplicate Test User',
       cpf: uniqueCpf,
@@ -61,10 +65,7 @@ describe('ClientController (e2e)', () => {
     };
 
     // First request should succeed
-    await request(app.getHttpServer())
-      .post('/clients')
-      .send(dto)
-      .expect(201);
+    await request(app.getHttpServer()).post('/clients').send(dto).expect(201);
 
     // Second request with same CPF should fail with domain exception mapped to 400
     const response = await request(app.getHttpServer())
