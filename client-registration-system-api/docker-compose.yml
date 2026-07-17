@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:14
+    container_name: client-registration-database
+    restart: always
+    environment:
+      - POSTGRES_USER=client-registration-service
+      - POSTGRES_PASSWORD=client-registration-service
+      - POSTGRES_DB=client-registration-service
+    ports:
+      - ${BIND_DB_PORT:-5432}:5432
+
+  client-registration-service:
+    build:
+      context: .
+      dockerfile: .docker/build/Dockerfile
+      target: build
+    env_file: .env
+    networks:
+      - default
+      - guideline
+    command: ${SERVICE_COMMAND:-npm run start}
+    depends_on:
+      - postgres
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    ports:
+      - ${BIND_PORT:-3000}:3000
+
+networks:
+  guideline:
+    external: true
+    name: guideline
