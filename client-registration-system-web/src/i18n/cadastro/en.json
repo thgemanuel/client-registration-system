@@ -1,0 +1,22 @@
+{
+  "Form": {
+    "title": "Client Registration",
+    "description": "Fill in the details below to register.",
+    "fullName": "Full name *",
+    "fullNamePlaceholder": "Ex: John Doe",
+    "cpf": "CPF *",
+    "cpfPlaceholder": "000.000.000-00",
+    "email": "E-mail *",
+    "emailPlaceholder": "john@example.com",
+    "favoriteColor": "Favorite color *",
+    "favoriteColorPlaceholder": "Select a color",
+    "observations": "Observations",
+    "observationsOptional": "(optional)",
+    "observationsPlaceholder": "Additional information...",
+    "submit": "Register",
+    "submitting": "Submitting...",
+    "successTitle": "Registration successful!",
+    "successMessage": "Your data has been received. Thank you for registering!",
+    "newRegistration": "Register again"
+  }
+}

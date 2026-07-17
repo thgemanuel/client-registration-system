@@ -1,0 +1,22 @@
+{
+  "Form": {
+    "title": "Cadastro de Cliente",
+    "description": "Preencha os dados abaixo para realizar seu cadastro.",
+    "fullName": "Nome completo *",
+    "fullNamePlaceholder": "Ex: João da Silva",
+    "cpf": "CPF *",
+    "cpfPlaceholder": "000.000.000-00",
+    "email": "E-mail *",
+    "emailPlaceholder": "joao@exemplo.com",
+    "favoriteColor": "Cor preferida *",
+    "favoriteColorPlaceholder": "Selecione uma cor",
+    "observations": "Observações",
+    "observationsOptional": "(opcional)",
+    "observationsPlaceholder": "Informações adicionais...",
+    "submit": "Cadastrar",
+    "submitting": "Enviando...",
+    "successTitle": "Cadastro realizado com sucesso!",
+    "successMessage": "Seus dados foram recebidos. Obrigado pelo cadastro!",
+    "newRegistration": "Fazer novo cadastro"
+  }
+}

@@ -1,0 +1,19 @@
+services:
+  client-registration-web:
+    build:
+      context: .
+      dockerfile: .docker/build/Dockerfile
+      target: production
+    env_file: .env
+    networks:
+      - default
+      - guideline
+    ports:
+      - ${BIND_PORT:-3001}:3001
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+networks:
+  guideline:
+    external: true
+    name: guideline

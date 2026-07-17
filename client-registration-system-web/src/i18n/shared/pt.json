@@ -1,0 +1,21 @@
+{
+  "Schema": {
+    "fullNameMin": "Nome completo deve ter pelo menos 3 caracteres.",
+    "fullNameMax": "Nome completo deve ter no máximo 150 caracteres.",
+    "cpfRequired": "CPF é obrigatório.",
+    "cpfInvalid": "CPF inválido.",
+    "emailRequired": "E-mail é obrigatório.",
+    "emailInvalid": "Informe um e-mail válido.",
+    "favoriteColorRequired": "Selecione uma cor preferida.",
+    "observationsMax": "Observações deve ter no máximo 500 caracteres."
+  },
+  "Colors": {
+    "red": "Vermelho",
+    "orange": "Laranja",
+    "yellow": "Amarelo",
+    "green": "Verde",
+    "blue": "Azul",
+    "indigo": "Anil",
+    "violet": "Violeta"
+  }
+}
