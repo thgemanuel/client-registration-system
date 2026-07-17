@@ -13,41 +13,43 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClientController = void 0;
-const common_1 = require("@nestjs/common");
-const swagger_1 = require("@nestjs/swagger");
 const create_client_dto_1 = require("../../application/dto/create-client.dto");
 const create_client_response_dto_1 = require("../../application/dto/create-client-response.dto");
-const create_client_use_case_1 = require("../../application/use-cases/create-client.use-case");
+const register_client_use_case_1 = require("../../application/use-cases/register-client.use-case");
+const bad_request_dto_1 = require("../dto/bad-request.dto");
+const internal_server_error_dto_1 = require("../dto/internal-server-error.dto");
+const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
 let ClientController = class ClientController {
-    createClientUseCase;
-    constructor(createClientUseCase) {
-        this.createClientUseCase = createClientUseCase;
+    constructor(registerClientUseCase) {
+        this.registerClientUseCase = registerClientUseCase;
     }
-    async createClient(dto) {
-        return await this.createClientUseCase.execute(dto);
+    async registerClient(dto) {
+        return await this.registerClientUseCase.execute(dto);
     }
 };
 exports.ClientController = ClientController;
 __decorate([
     (0, swagger_1.ApiTags)('Client'),
     (0, swagger_1.ApiOperation)({
-        summary: 'Register a new client',
-        description: 'Creates a new client registration with provided data',
+        summary: 'Cadastra um novo cliente',
+        description: 'Realiza o cadastro de um novo cliente. O CPF deve ser único — um cliente só pode se cadastrar uma vez.',
     }),
-    (0, common_1.Post)(),
+    (0, common_1.Post)('/clients'),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
+    (0, swagger_1.ApiResponse)({ status: common_1.HttpStatus.CREATED, type: create_client_response_dto_1.RegisterClientResponseDTO }),
+    (0, swagger_1.ApiResponse)({ status: common_1.HttpStatus.BAD_REQUEST, type: bad_request_dto_1.BadRequestDTO }),
     (0, swagger_1.ApiResponse)({
-        status: common_1.HttpStatus.CREATED,
-        type: create_client_response_dto_1.CreateClientResponseDTO,
-        description: 'Client registered successfully',
+        status: common_1.HttpStatus.INTERNAL_SERVER_ERROR,
+        type: internal_server_error_dto_1.InternalServerErrorDTO,
     }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_client_dto_1.CreateClientDTO]),
+    __metadata("design:paramtypes", [create_client_dto_1.RegisterClientDTO]),
     __metadata("design:returntype", Promise)
-], ClientController.prototype, "createClient", null);
+], ClientController.prototype, "registerClient", null);
 exports.ClientController = ClientController = __decorate([
-    (0, common_1.Controller)('clients'),
-    __metadata("design:paramtypes", [create_client_use_case_1.CreateClientUseCase])
+    (0, common_1.Controller)(),
+    __metadata("design:paramtypes", [register_client_use_case_1.RegisterClientUseCase])
 ], ClientController);
 //# sourceMappingURL=client.controller.js.map

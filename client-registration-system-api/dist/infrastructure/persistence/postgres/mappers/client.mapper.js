@@ -6,42 +6,40 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ClientTypeOrmMapper = void 0;
-const common_1 = require("@nestjs/common");
+exports.ClientPersistenceMapper = void 0;
 const client_entity_1 = require("../../../../domain/entities/client.entity");
 const client_schema_1 = require("../schemas/client.schema");
-let ClientTypeOrmMapper = class ClientTypeOrmMapper {
-    fromEntityToSchema(entity) {
-        if (!entity)
+const common_1 = require("@nestjs/common");
+let ClientPersistenceMapper = class ClientPersistenceMapper {
+    fromEntityToSchema(client) {
+        if (!client)
             return null;
         const schema = new client_schema_1.ClientTypeORM();
-        schema.id = entity.id;
-        schema.full_name = entity.fullName;
-        schema.cpf = entity.cpf;
-        schema.email = entity.email;
-        schema.preferred_color = entity.preferredColor;
-        schema.observations = entity.observations;
-        schema.inserted_at = entity.insertedAt;
-        schema.updated_at = entity.updatedAt;
+        schema.id = client.id;
+        schema.fullName = client.fullName;
+        schema.cpf = client.cpf;
+        schema.email = client.email;
+        schema.favoriteColor = client.favoriteColor;
+        schema.observations = client.observations;
         return schema;
     }
     fromSchemaToEntity(schema) {
         if (!schema)
             return null;
-        const entity = new client_entity_1.ClientEntity();
-        entity.id = schema.id;
-        entity.fullName = schema.full_name;
-        entity.cpf = schema.cpf;
-        entity.email = schema.email;
-        entity.preferredColor = schema.preferred_color;
-        entity.observations = schema.observations;
-        entity.insertedAt = schema.inserted_at;
-        entity.updatedAt = schema.updated_at;
-        return entity;
+        const client = new client_entity_1.Client();
+        client.id = schema.id;
+        client.fullName = schema.fullName;
+        client.cpf = schema.cpf;
+        client.email = schema.email;
+        client.favoriteColor = schema.favoriteColor;
+        client.observations = schema.observations;
+        client.insertedAt = schema.insertedAt;
+        client.updatedAt = schema.updatedAt;
+        return client;
     }
 };
-exports.ClientTypeOrmMapper = ClientTypeOrmMapper;
-exports.ClientTypeOrmMapper = ClientTypeOrmMapper = __decorate([
+exports.ClientPersistenceMapper = ClientPersistenceMapper;
+exports.ClientPersistenceMapper = ClientPersistenceMapper = __decorate([
     (0, common_1.Injectable)()
-], ClientTypeOrmMapper);
+], ClientPersistenceMapper);
 //# sourceMappingURL=client.mapper.js.map

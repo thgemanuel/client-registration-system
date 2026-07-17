@@ -1,7 +1,8 @@
-export declare class CreateClientDTO {
+import { RainbowColorEnum } from "../../domain/enums/rainbow-color.enum";
+export declare class RegisterClientDTO {
     fullName: string;
     cpf: string;
     email: string;
-    preferredColor: string;
+    favoriteColor: RainbowColorEnum;
     observations?: string;
 }

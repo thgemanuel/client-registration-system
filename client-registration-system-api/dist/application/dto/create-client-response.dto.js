@@ -1,14 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateClientResponseDTO = void 0;
-class CreateClientResponseDTO {
-    id;
-    fullName;
-    cpf;
-    email;
-    preferredColor;
-    observations;
-    insertedAt;
+exports.RegisterClientResponseDTO = void 0;
+class RegisterClientResponseDTO {
 }
-exports.CreateClientResponseDTO = CreateClientResponseDTO;
+exports.RegisterClientResponseDTO = RegisterClientResponseDTO;
 //# sourceMappingURL=create-client-response.dto.js.map

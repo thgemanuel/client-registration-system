@@ -13,12 +13,6 @@ const typeorm_1 = require("@nestjs/typeorm");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const client_schema_1 = require("./infrastructure/persistence/postgres/schemas/client.schema");
-const client_controller_1 = require("./infrastructure/controllers/client.controller");
-const client_mapper_1 = require("./infrastructure/persistence/postgres/mappers/client.mapper");
-const client_repository_1 = require("./infrastructure/persistence/postgres/repositories/client.repository");
-const client_mapper_2 = require("./application/mappers/client.mapper");
-const create_client_use_case_1 = require("./application/use-cases/create-client.use-case");
-const client_repository_interface_1 = require("./domain/repositories/client.repository.interface");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -40,17 +34,8 @@ exports.AppModule = AppModule = __decorate([
             }),
             typeorm_1.TypeOrmModule.forFeature([client_schema_1.ClientTypeORM]),
         ],
-        controllers: [app_controller_1.AppController, client_controller_1.ClientController],
-        providers: [
-            app_service_1.AppService,
-            client_mapper_1.ClientTypeOrmMapper,
-            {
-                provide: client_repository_interface_1.CLIENTREPOSITORY_NAME,
-                useClass: client_repository_1.ClientRepositoryTypeORM,
-            },
-            client_mapper_2.ClientMapper,
-            create_client_use_case_1.CreateClientUseCase,
-        ],
+        controllers: [app_controller_1.AppController],
+        providers: [app_service_1.AppService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

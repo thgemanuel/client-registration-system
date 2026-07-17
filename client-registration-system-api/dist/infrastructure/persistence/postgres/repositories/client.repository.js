@@ -13,32 +13,22 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClientRepositoryTypeORM = void 0;
+const typeorm_1 = require("typeorm");
 const common_1 = require("@nestjs/common");
-const typeorm_1 = require("@nestjs/typeorm");
-const typeorm_2 = require("typeorm");
+const typeorm_2 = require("@nestjs/typeorm");
 const client_schema_1 = require("../schemas/client.schema");
 const client_mapper_1 = require("../mappers/client.mapper");
 let ClientRepositoryTypeORM = class ClientRepositoryTypeORM {
-    typeOrmRepository;
-    clientTypeOrmMapper;
-    constructor(typeOrmRepository, clientTypeOrmMapper) {
+    constructor(typeOrmRepository, clientPersistenceMapper) {
         this.typeOrmRepository = typeOrmRepository;
-        this.clientTypeOrmMapper = clientTypeOrmMapper;
+        this.clientPersistenceMapper = clientPersistenceMapper;
     }
     async create(client) {
-        let clientSchema = this.clientTypeOrmMapper.fromEntityToSchema(client);
+        let clientSchema = this.clientPersistenceMapper.fromEntityToSchema(client);
         clientSchema = await this.typeOrmRepository.save(clientSchema, {
             reload: true,
         });
-        return this.clientTypeOrmMapper.fromSchemaToEntity(clientSchema);
-    }
-    async findById(id) {
-        const clientSchema = await this.typeOrmRepository.findOne({
-            where: { id },
-        });
-        if (!clientSchema)
-            return null;
-        return this.clientTypeOrmMapper.fromSchemaToEntity(clientSchema);
+        return this.clientPersistenceMapper.fromSchemaToEntity(clientSchema);
     }
     async findByCpf(cpf) {
         const clientSchema = await this.typeOrmRepository.findOne({
@@ -46,36 +36,14 @@ let ClientRepositoryTypeORM = class ClientRepositoryTypeORM {
         });
         if (!clientSchema)
             return null;
-        return this.clientTypeOrmMapper.fromSchemaToEntity(clientSchema);
-    }
-    async findByEmail(email) {
-        const clientSchema = await this.typeOrmRepository.findOne({
-            where: { email },
-        });
-        if (!clientSchema)
-            return null;
-        return this.clientTypeOrmMapper.fromSchemaToEntity(clientSchema);
-    }
-    async findAll() {
-        const clientSchemas = await this.typeOrmRepository.find();
-        return clientSchemas.map((schema) => this.clientTypeOrmMapper.fromSchemaToEntity(schema));
-    }
-    async update(client) {
-        let clientSchema = this.clientTypeOrmMapper.fromEntityToSchema(client);
-        clientSchema = await this.typeOrmRepository.save(clientSchema, {
-            reload: true,
-        });
-        return this.clientTypeOrmMapper.fromSchemaToEntity(clientSchema);
-    }
-    async delete(id) {
-        await this.typeOrmRepository.delete(id);
+        return this.clientPersistenceMapper.fromSchemaToEntity(clientSchema);
     }
 };
 exports.ClientRepositoryTypeORM = ClientRepositoryTypeORM;
 exports.ClientRepositoryTypeORM = ClientRepositoryTypeORM = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, typeorm_1.InjectRepository)(client_schema_1.ClientTypeORM)),
-    __metadata("design:paramtypes", [typeorm_2.Repository,
-        client_mapper_1.ClientTypeOrmMapper])
+    __param(0, (0, typeorm_2.InjectRepository)(client_schema_1.ClientTypeORM)),
+    __metadata("design:paramtypes", [typeorm_1.Repository,
+        client_mapper_1.ClientPersistenceMapper])
 ], ClientRepositoryTypeORM);
 //# sourceMappingURL=client.repository.js.map

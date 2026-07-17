@@ -12,27 +12,30 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateClientUseCase = void 0;
+exports.RegisterClientUseCase = void 0;
 const common_1 = require("@nestjs/common");
-const client_repository_interface_1 = require("../../domain/repositories/client.repository.interface");
+const client_repository_1 = require("../../domain/repositories/client.repository");
 const client_mapper_1 = require("../mappers/client.mapper");
-let CreateClientUseCase = class CreateClientUseCase {
-    clientRepository;
-    clientMapper;
+const client_already_exists_exception_1 = require("../../domain/exceptions/client-already-exists.exception");
+let RegisterClientUseCase = class RegisterClientUseCase {
     constructor(clientRepository, clientMapper) {
         this.clientRepository = clientRepository;
         this.clientMapper = clientMapper;
     }
     async execute(dto) {
+        const existingClient = await this.clientRepository.findByCpf(dto.cpf);
+        if (existingClient) {
+            throw new client_already_exists_exception_1.ClientAlreadyExistsException();
+        }
         const client = this.clientMapper.parseToEntity(dto);
         const createdClient = await this.clientRepository.create(client);
         return this.clientMapper.parseToDTO(createdClient);
     }
 };
-exports.CreateClientUseCase = CreateClientUseCase;
-exports.CreateClientUseCase = CreateClientUseCase = __decorate([
+exports.RegisterClientUseCase = RegisterClientUseCase;
+exports.RegisterClientUseCase = RegisterClientUseCase = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)(client_repository_interface_1.CLIENTREPOSITORY_NAME)),
+    __param(0, (0, common_1.Inject)(client_repository_1.CLIENT_REPOSITORY_NAME)),
     __metadata("design:paramtypes", [Object, client_mapper_1.ClientMapper])
-], CreateClientUseCase);
-//# sourceMappingURL=create-client.use-case.js.map
+], RegisterClientUseCase);
+//# sourceMappingURL=register-client.use-case.js.map

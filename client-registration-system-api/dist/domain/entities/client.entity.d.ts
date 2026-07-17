@@ -1,17 +1,9 @@
-export declare class ClientEntity {
-    id: string;
+import { AbstractEntity } from './abstract.entity';
+import { RainbowColorEnum } from "../enums/rainbow-color.enum";
+export declare class Client extends AbstractEntity {
     fullName: string;
     cpf: string;
     email: string;
-    preferredColor: string;
+    favoriteColor: RainbowColorEnum;
     observations?: string;
-    insertedAt: Date;
-    updatedAt?: Date;
-    constructor(props?: {
-        fullName: string;
-        cpf: string;
-        email: string;
-        preferredColor: string;
-        observations?: string;
-    });
 }

@@ -11,27 +11,26 @@ const common_1 = require("@nestjs/common");
 const client_entity_1 = require("../../domain/entities/client.entity");
 const create_client_response_dto_1 = require("../dto/create-client-response.dto");
 let ClientMapper = class ClientMapper {
-    parseToEntity(createClientDTO) {
-        if (!createClientDTO)
+    parseToEntity(dto) {
+        if (!dto)
             return null;
-        const client = new client_entity_1.ClientEntity({
-            fullName: createClientDTO.fullName,
-            cpf: createClientDTO.cpf,
-            email: createClientDTO.email,
-            preferredColor: createClientDTO.preferredColor,
-            observations: createClientDTO.observations,
-        });
+        const client = new client_entity_1.Client();
+        client.fullName = dto.fullName;
+        client.cpf = dto.cpf;
+        client.email = dto.email;
+        client.favoriteColor = dto.favoriteColor;
+        client.observations = dto.observations;
         return client;
     }
     parseToDTO(client) {
         if (!client)
             return null;
-        const response = new create_client_response_dto_1.CreateClientResponseDTO();
+        const response = new create_client_response_dto_1.RegisterClientResponseDTO();
         response.id = client.id;
         response.fullName = client.fullName;
         response.cpf = client.cpf;
         response.email = client.email;
-        response.preferredColor = client.preferredColor;
+        response.favoriteColor = client.favoriteColor;
         response.observations = client.observations;
         response.insertedAt = client.insertedAt;
         return response;
