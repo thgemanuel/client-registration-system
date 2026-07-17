@@ -6,21 +6,37 @@ import { CreateClientInput, CreateClientOutput } from "./types";
 export async function createClientAction(
   input: CreateClientInput
 ): Promise<ActionResult<CreateClientOutput>> {
-  console.log("[Server Action] Recebendo payload para criar cliente:", input);
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+    const response = await fetch(`${apiUrl}/clients`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(input),
+    });
 
-  // TODO: Implementar chamada real ao endpoint POST /clients usando fetch()
-  
-  // Simulando latência de rede (1.5 segundos)
-  await new Promise((resolve) => setTimeout(resolve, 1500));
+    const data = await response.json();
 
-  // Simulando sucesso do retorno
-  console.log("[Server Action] Mock: Cliente criado com sucesso.");
+    if (!response.ok) {
+      // Backend returns validation errors in data.errors[] 
+      // We will take the first error reason, or a generic message.
+      const errorMsg = data?.errors?.[0]?.reason || 'Erro ao salvar cliente no banco de dados.';
+      return {
+        success: false,
+        error: errorMsg,
+      };
+    }
 
-  return {
-    success: true,
-    data: {
-      id: crypto.randomUUID(),
-      createdAt: new Date().toISOString(),
-    },
-  };
+    return {
+      success: true,
+      data,
+    };
+  } catch (error) {
+    console.error("[createClientAction] Erro de rede ou indisponibilidade:", error);
+    return {
+      success: false,
+      error: "Erro ao conectar com o servidor.",
+    };
+  }
 }

@@ -17,6 +17,7 @@
     "submitting": "Enviando...",
     "successTitle": "Cadastro realizado com sucesso!",
     "successMessage": "Seus dados foram recebidos. Obrigado pelo cadastro!",
-    "newRegistration": "Fazer novo cadastro"
+    "newRegistration": "Fazer novo cadastro",
+    "errorMessage": "Ocorreu um erro ao realizar o cadastro. Tente novamente."
   }
 }

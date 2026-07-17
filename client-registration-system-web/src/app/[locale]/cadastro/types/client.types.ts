@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getClientRegistrationSchema, RainbowColor } from "@/shared/schemas/client.schema";
+import { getClientRegistrationSchema, RainbowColor } from "../schemas/client.schema";
 
 export type ClientRegistrationInput = z.infer<ReturnType<typeof getClientRegistrationSchema>>;
 

@@ -17,6 +17,7 @@
     "submitting": "Submitting...",
     "successTitle": "Registration successful!",
     "successMessage": "Your data has been received. Thank you for registering!",
-    "newRegistration": "Register again"
+    "newRegistration": "Register again",
+    "errorMessage": "An error occurred while registering. Please try again."
   }
 }

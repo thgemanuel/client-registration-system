@@ -15,6 +15,12 @@ logs:
 logs-app:
 	@docker compose logs $(SERVICE_NAME) -f
 
+test: setup
+	@docker compose run --rm $(SERVICE_NAME) npm run test
+
+test-e2e: setup
+	@docker compose run --rm $(SERVICE_NAME) npm run test:e2e
+
 lint:
 	@docker compose run --rm $(SERVICE_NAME) npm run lint
 

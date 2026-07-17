@@ -1,4 +1,4 @@
-import { RainbowColorKey } from "@/shared/types/client.types";
+import { RainbowColorKey } from "@/app/[locale]/cadastro/types/client.types";
 
 export interface CreateClientInput {
   fullName: string;

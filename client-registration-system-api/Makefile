@@ -16,6 +16,9 @@ build: setup
 test: setup
 	@docker compose run --rm $(SERVICE_NAME) npm run test
 
+test-e2e: setup
+	@docker compose run --rm $(SERVICE_NAME) npm run test:e2e
+
 logs:
 	@docker compose logs -f
 
