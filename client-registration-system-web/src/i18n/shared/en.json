@@ -2,6 +2,8 @@
   "Schema": {
     "fullNameMin": "Full name must be at least 3 characters long.",
     "fullNameMax": "Full name must be at most 150 characters long.",
+    "fullNameInvalid": "Please enter your full name (first name and surname with at least 2 characters).",
+    "fullNameContainsNumbers": "Full name cannot contain numbers.",
     "cpfRequired": "CPF is required.",
     "cpfInvalid": "Invalid CPF.",
     "emailRequired": "E-mail is required.",

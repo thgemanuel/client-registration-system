@@ -15,7 +15,12 @@ export const getClientRegistrationSchema = (t: (key: string) => string) => z.obj
   fullName: z
     .string()
     .min(3, t('fullNameMin'))
-    .max(150, t('fullNameMax')),
+    .max(150, t('fullNameMax'))
+    .refine((val) => !/\d/.test(val), t('fullNameContainsNumbers'))
+    .refine((val) => {
+      const parts = val.trim().split(/\s+/);
+      return parts.length >= 2 && parts[parts.length - 1].length >= 2;
+    }, t('fullNameInvalid')),
 
   cpf: z
     .string()

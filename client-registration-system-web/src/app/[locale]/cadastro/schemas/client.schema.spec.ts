@@ -69,6 +69,51 @@ describe('Client Schema Validation', () => {
     expect(result.success).toBe(false);
   });
 
+  it('should fail when fullName does not contain a space (no surname)', () => {
+    const invalidData = {
+      fullName: 'John',
+      cpf: '52998224725',
+      email: 'john@example.com',
+      favoriteColor: 'blue',
+    };
+
+    const result = schema.safeParse(invalidData);
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues[0].message).toBe('fullNameInvalid');
+    }
+  });
+
+  it('should fail when fullName has a space but the surname is shorter than 2 characters', () => {
+    const invalidData = {
+      fullName: 'John D',
+      cpf: '52998224725',
+      email: 'john@example.com',
+      favoriteColor: 'blue',
+    };
+
+    const result = schema.safeParse(invalidData);
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues[0].message).toBe('fullNameInvalid');
+    }
+  });
+
+  it('should fail when fullName contains numbers', () => {
+    const invalidData = {
+      fullName: 'John Doe 123',
+      cpf: '52998224725',
+      email: 'john@example.com',
+      favoriteColor: 'blue',
+    };
+
+    const result = schema.safeParse(invalidData);
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues[0].message).toBe('fullNameContainsNumbers');
+    }
+  });
+
   it('should fail when CPF is invalid algorithmically', () => {
     const invalidData = {
       fullName: 'John Doe',

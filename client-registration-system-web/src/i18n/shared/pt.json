@@ -2,6 +2,8 @@
   "Schema": {
     "fullNameMin": "Nome completo deve ter pelo menos 3 caracteres.",
     "fullNameMax": "Nome completo deve ter no máximo 150 caracteres.",
+    "fullNameInvalid": "Informe o nome completo (nome e sobrenome com no mínimo 2 caracteres).",
+    "fullNameContainsNumbers": "O nome completo não pode conter números.",
     "cpfRequired": "CPF é obrigatório.",
     "cpfInvalid": "CPF inválido.",
     "emailRequired": "E-mail é obrigatório.",
