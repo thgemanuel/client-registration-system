@@ -71,9 +71,14 @@ run-migrations:
 	docker-compose run --rm api npm run $(MIGRATIONS_SCRIPT)
 
 ##
+##
 ## test: Executa testes unitários de ambos os projetos via Docker
 ##
+test: API_TARGET=build
+test: WEB_TARGET=deps
 test:
+	@echo "Garantindo que imagens de teste estejam prontas..."
+	docker-compose build api web
 	@echo "Executando testes da API (Docker)..."
 	docker-compose run --rm api npm run test
 	@echo "Executando testes do Web (Docker)..."
@@ -82,7 +87,11 @@ test:
 ##
 ## test-e2e: Executa testes e2e de ambos os projetos via Docker
 ##
+test-e2e: API_TARGET=build
+test-e2e: WEB_TARGET=deps
 test-e2e: run-migrations
+	@echo "Garantindo que imagens de teste estejam prontas..."
+	docker-compose build api web
 	@echo "Executando testes e2e da API (Docker)..."
 	docker-compose run --rm -e DATABASE_URL=postgres://client-registration-service:client-registration-service@postgres:5432/client-registration-service api npm run test:e2e
 	@echo "Executando testes e2e do Web (Docker)..."
