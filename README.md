@@ -38,7 +38,7 @@ client-registration-system/
 ## ⚡ Rodando com um único comando
 
 ```bash
-make dev
+make watch
 ```
 
 Esse comando executa automaticamente, na ordem correta:
@@ -59,7 +59,7 @@ Todos os comandos devem ser executados na **raiz do repositório**:
 
 | Comando | Descrição |
 |---------|-----------|
-| `make watch` / `make dev` | Sobe todos os serviços em modo de desenvolvimento (com watch/hot reload) |
+| `make watch` | Sobe todos os serviços em modo de desenvolvimento (com watch/hot reload) |
 | `make run` | Sobe todos os serviços em modo de produção (sem watch/hot reload) |
 | `make run-migrations` | Executa as migrations do banco de dados manualmente |
 | `make test` | Executa os testes unitários da API e do Web via Docker |
