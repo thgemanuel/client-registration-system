@@ -46,7 +46,7 @@ Esse comando executa automaticamente, na ordem correta:
 1. **Sobe o banco de dados** (PostgreSQL) e aguarda ele estar pronto via *healthcheck*
 2. **Executa as migrations** do TypeORM, criando as tabelas necessárias
 3. **Sobe a API** (NestJS em modo watch — hot reload ativo)
-4. **Sobe o Web App** (Next.js em modo dev com Turbopack)
+4. **Sobe o Web App** (Next.js em modo dev com Webpack e polling ativo para Windows)
 
 Após a inicialização, os serviços estarão disponíveis em:
 - **Web:** http://localhost:3001
@@ -59,9 +59,8 @@ Todos os comandos devem ser executados na **raiz do repositório**:
 
 | Comando | Descrição |
 |---------|-----------|
-| `make dev` | Sobe todos os serviços em modo de desenvolvimento (com hot reload) |
-| `make dev-api` | Sobe apenas a API e o banco de dados |
-| `make dev-web` | Sobe apenas o Web App |
+| `make watch` / `make dev` | Sobe todos os serviços em modo de desenvolvimento (com watch/hot reload) |
+| `make run` | Sobe todos os serviços em modo de produção (sem watch/hot reload) |
 | `make run-migrations` | Executa as migrations do banco de dados manualmente |
 | `make test` | Executa os testes unitários da API e do Web via Docker |
 | `make test-e2e` | Executa os testes E2E (aplica migrations antes) |
@@ -107,12 +106,12 @@ Ambos os projetos possuem suites de testes cobertas com **Jest**. Os testes E2E 
 | `GeneralExceptionFilter` | Unitário | Tratamento de HttpException e erros genéricos (500) |
 | `ClientController (E2E)` | E2E | CRUD completo via HTTP com banco de dados real |
 
-**Web** — 4 suites, 28 testes
+**Web** — 4 suites, 31 testes
 
 | Suite | Tipo | Descrição |
 |-------|------|-----------|
 | `formatters` | Unitário | Utilitário `formatCpf` (formatação, máscara, edge cases) |
-| `Client Schema` | Unitário | Validação Zod: todos os campos, CPF algoritmo, strip de máscara |
+| `Client Schema` | Unitário | Validação Zod: todos os campos, CPF algoritmo, e-mail, cor inválida, observations, strip de máscara do CPF, todas as cores válidas, nome completo sem números e com sobrenome |
 | `createClientAction` | Unitário | Server Action: sucesso, erro da API, erro de rede |
 | `ClientRegistrationForm` | Componente | Renderização de campos, erros de validação, bloqueio de submit |
 

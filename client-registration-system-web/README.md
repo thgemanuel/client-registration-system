@@ -9,7 +9,7 @@ Este é o serviço de frontend (Web) do **Client Registration System**. Trata-se
 - **[Tailwind CSS](https://tailwindcss.com/)**: Framework CSS utilitário para estilização rápida e responsiva.
 - **[shadcn/ui](https://ui.shadcn.com/)**: Componentes de interface acessíveis e altamente customizáveis (usando Radix UI).
 - **[React Hook Form](https://react-hook-form.com/) & [Zod](https://zod.dev/)**: Para gerenciamento de estado complexo de formulários e validação rigorosa de schemas.
-- **[Turbopack](https://turbo.build/pack)**: Sucessor do Webpack, ativado para tempos de build de desenvolvimento ultrarrápidos.
+- **[Webpack]**: Configurado com polling ativo para o ambiente de desenvolvimento, garantindo o funcionamento do hot reload mesmo sob volumes compartilhados no Docker/Windows.
 - **[Jest](https://jestjs.io/) & [Testing Library](https://testing-library.com/)**: Framework de testes unitários e de componentes.
 - **[Cypress](https://www.cypress.io/)**: Ferramenta de testes End-to-End (E2E) simulando comportamento de usuários reais.
 
@@ -27,11 +27,11 @@ Antes de iniciar, você precisará ter instalado em sua máquina:
 A partir da **pasta raiz do repositório** (`client-registration-system/`):
 
 ```bash
-# Sobe apenas o Web App (a API deve estar rodando)
-make dev-web
+# Sobe apenas o Web App em modo watch
+make watch
 
-# Sobe Web + API juntos (recomendado para desenvolvimento completo)
-make dev
+# Sobe Web + API juntos (na raiz do repositório)
+make watch
 ```
 
 ### Executando Manualmente (Sem o `Makefile`)
@@ -63,7 +63,7 @@ O Web usa **Jest** integrado ao **Next.js** (`next/jest`) com ambiente **jsdom**
 | Suite | Caminho | Tipo | O que testa |
 |-------|---------|------|-------------|
 | `formatters` | `src/shared/utils/formatters.spec.ts` | Unitário | `formatCpf`: CPF completo, digitação parcial, remoção de caracteres não-numéricos, truncamento, input vazio |
-| `Client Schema` | `src/app/[locale]/cadastro/schemas/client.schema.spec.ts` | Unitário | Validação Zod: campos obrigatórios, CPF algoritmo, e-mail, cor inválida, observations, strip de máscara do CPF, todas as cores válidas |
+| `Client Schema` | `src/app/[locale]/cadastro/schemas/client.schema.spec.ts` | Unitário | Validação Zod: campos obrigatórios, CPF algoritmo, e-mail, cor inválida, observations, strip de máscara do CPF, todas as cores válidas, nome completo sem números e com sobrenome |
 | `createClientAction` | `src/server-actions/client-registration-system-api/create-client/create-client.spec.ts` | Unitário | Server Action: resposta de sucesso (201), erro da API (4xx), erro de rede |
 | `ClientRegistrationForm` | `src/app/[locale]/cadastro/components/ClientRegistrationForm.spec.tsx` | Componente | Renderização de campos e placeholders, erros de validação ao submeter vazio, bloqueio de submit sem cor |
 

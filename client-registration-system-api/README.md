@@ -26,10 +26,10 @@ A partir da **pasta raiz do repositório** (`client-registration-system/`):
 
 ```bash
 # Sobe o banco, executa migrations e inicia a API em modo watch
-make dev-api
+make watch
 
-# Inicia API + Web juntos
-make dev
+# Inicia API + Web juntos (na raiz do repositório)
+make watch
 ```
 
 ### Executando Manualmente (Sem o `Makefile`)
