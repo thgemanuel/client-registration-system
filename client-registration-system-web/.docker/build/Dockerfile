@@ -11,7 +11,7 @@ COPY . .
 RUN npm run build
 
 FROM node:24-alpine AS production
-WORKDIR /app
+WORKDIR /app-prod
 ENV NODE_ENV=production
 
 RUN addgroup --system --gid 1001 nodejs

@@ -23,6 +23,7 @@ export API_TARGET
 export WEB_TARGET
 export API_COMMAND
 export WEB_COMMAND
+export MIGRATIONS_SCRIPT
 
 ##
 ## run: Executa API e Web localmente em containers de produção (sem watch)
@@ -31,6 +32,7 @@ run: API_TARGET=production
 run: WEB_TARGET=production
 run: API_COMMAND=node dist/main.js
 run: WEB_COMMAND=node server.js
+run: MIGRATIONS_SCRIPT=typeorm:prod:run-migrations
 run: setup run-migrations
 	@echo "Iniciando API e Web via Docker Compose (Modo Produção)..."
 	docker-compose up --build -d
@@ -42,6 +44,7 @@ watch: API_TARGET=build
 watch: WEB_TARGET=deps
 watch: API_COMMAND=npm run start:dev
 watch: WEB_COMMAND=npm run dev
+watch: MIGRATIONS_SCRIPT=typeorm:run-migrations
 watch: setup run-migrations
 	@echo "Iniciando API e Web via Docker Compose (Modo Watch)..."
 	docker-compose up --build -d
@@ -65,7 +68,7 @@ install:
 ##
 run-migrations:
 	@echo "Executando migrations do banco de dados (Docker)..."
-	docker-compose run --rm api npm run typeorm:run-migrations
+	docker-compose run --rm api npm run $(MIGRATIONS_SCRIPT)
 
 ##
 ## test: Executa testes unitários de ambos os projetos via Docker
