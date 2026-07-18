@@ -178,7 +178,7 @@ export function ClientRegistrationForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{tForm("favoriteColor")}</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value || ""}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder={tForm("favoriteColorPlaceholder")}>

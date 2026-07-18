@@ -14,12 +14,13 @@ services:
     build:
       context: .
       dockerfile: .docker/build/Dockerfile
-      target: build
+      target: ${API_TARGET:-build}
+    container_name: client-registration-api-local
+    command: ${SERVICE_COMMAND:-npm run start:dev}
     env_file: .env
     networks:
       - default
       - guideline
-    command: ${SERVICE_COMMAND:-npm run start}
     depends_on:
       - postgres
     volumes:

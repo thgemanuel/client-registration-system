@@ -8,7 +8,7 @@ services:
       - POSTGRES_PASSWORD=client-registration-service
       - POSTGRES_DB=client-registration-service
     ports:
-      - ${BIND_DB_PORT:-5432}:5432
+      - 5432:5432
     networks:
       - guideline
     healthcheck:
@@ -21,9 +21,9 @@ services:
     build:
       context: ./client-registration-system-api
       dockerfile: .docker/build/Dockerfile
-      target: build
+      target: ${API_TARGET:-build}
     container_name: client-registration-api
-    command: npm run start:dev
+    command: ${API_COMMAND:-npm run start:dev}
     depends_on:
       postgres:
         condition: service_healthy
@@ -31,7 +31,7 @@ services:
       - ./client-registration-system-api:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - ${BIND_PORT_API:-3000}:3000
+      - 3000:3000
     environment:
       - DATABASE_URL=postgres://client-registration-service:client-registration-service@postgres:5432/client-registration-service
       - PORT=3000
@@ -44,15 +44,15 @@ services:
     build:
       context: ./client-registration-system-web
       dockerfile: .docker/build/Dockerfile
-      target: deps
+      target: ${WEB_TARGET:-deps}
     container_name: client-registration-web
-    command: npm run dev
+    command: ${WEB_COMMAND:-npm run dev}
     volumes:
       - ./client-registration-system-web:/app
       - /app/node_modules
       - /app/.next
     ports:
-      - ${BIND_PORT_WEB:-3001}:3001
+      - 3001:3001
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:3000
       - PORT=3001

@@ -22,5 +22,10 @@
       "@application/*": ["src/application/*"],
       "@infrastructure/*": ["src/infrastructure/*"]
     }
+  },
+  "watchOptions": {
+    "watchFile": "dynamicPriorityPolling",
+    "watchDirectory": "dynamicPriorityPolling",
+    "fallbackPolling": "dynamicPriority"
   }
 }

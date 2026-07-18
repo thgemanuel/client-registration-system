@@ -1,8 +1,19 @@
 GUIDELINE_NETWORK=guideline
 SERVICE_NAME=client-registration-web
 
+export WEB_TARGET
+export SERVICE_COMMAND
+
+run: WEB_TARGET=production
+run: SERVICE_COMMAND=node server.js
 run: build
-	@echo 'Executando a aplicação'
+	@echo 'Executando a aplicação em modo produção (sem debug)'
+	@docker compose up --remove-orphans -d
+
+watch: WEB_TARGET=deps
+watch: SERVICE_COMMAND=npm run dev
+watch: build
+	@echo 'Executando a aplicação em modo watch (dev)'
 	@docker compose up --remove-orphans -d
 
 build: setup

@@ -1,13 +1,20 @@
 GUIDELINE_NETWORK=guideline
 SERVICE_NAME=client-registration-service
 
+export API_TARGET
+export SERVICE_COMMAND
+
+run: API_TARGET=production
+run: SERVICE_COMMAND=node dist/main.js
 run: build run-migrations
-	@echo 'Executando a aplicação'
+	@echo 'Executando a aplicação em modo produção (sem debug)'
 	@docker compose up --remove-orphans -d
 
+watch: API_TARGET=build
+watch: SERVICE_COMMAND=npm run start:dev
 watch: build run-migrations
-	@echo 'Executando a aplicação em modo watch'
-	@SERVICE_COMMAND="npm run start:dev" docker compose up --remove-orphans -d
+	@echo 'Executando a aplicação em modo watch (start:dev)'
+	@docker compose up --remove-orphans -d
 
 build: setup
 	@echo 'Executando build da aplicação'

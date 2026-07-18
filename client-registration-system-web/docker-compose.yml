@@ -3,11 +3,20 @@ services:
     build:
       context: .
       dockerfile: .docker/build/Dockerfile
-      target: production
+      target: ${WEB_TARGET:-deps}
+    container_name: client-registration-web-local
+    command: ${SERVICE_COMMAND:-npm run dev}
     env_file: .env
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
     networks:
       - default
       - guideline
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
     ports:
       - ${BIND_PORT:-3001}:3001
     extra_hosts:

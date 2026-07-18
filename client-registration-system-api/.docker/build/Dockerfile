@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-RUN npm ci
+RUN npm ci --ignore-scripts
 RUN npm run build
 
 FROM node:24-alpine AS production
