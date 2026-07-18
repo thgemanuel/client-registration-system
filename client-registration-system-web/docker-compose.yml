@@ -10,6 +10,7 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
+      - CLIENT_REGISTRATION_API_URL=http://client-registration-api-local:3000
     networks:
       - default
       - guideline

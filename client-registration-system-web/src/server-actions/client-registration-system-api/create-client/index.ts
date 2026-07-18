@@ -7,7 +7,10 @@ export async function createClientAction(
   input: CreateClientInput
 ): Promise<ActionResult<CreateClientOutput>> {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+    const apiUrl = process.env.CLIENT_REGISTRATION_API_URL;
+    if (!apiUrl) {
+      throw new Error("CLIENT_REGISTRATION_API_URL environment variable is not defined");
+    }
     const response = await fetch(`${apiUrl}/clients`, {
       method: "POST",
       headers: {
