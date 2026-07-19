@@ -2,6 +2,7 @@
 
 import { ActionResult } from "@/shared/types/action-result.types";
 import { CreateClientInput, CreateClientOutput } from "./types";
+import { ClientRegistrationSystemExceptions } from "../enums/client-registration-system-api-domain-exceptions.enum";
 
 export async function createClientAction(
   input: CreateClientInput
@@ -28,8 +29,8 @@ export async function createClientAction(
       const errorCode = firstError?.code;
 
       if (
-        errorCode === "ClientAlreadyExistsException" ||
-        errorCode === "ClientEmailAlreadyExistsException"
+        errorCode === ClientRegistrationSystemExceptions.ClientAlreadyExistsException ||
+        errorCode === ClientRegistrationSystemExceptions.ClientEmailAlreadyExistsException
       ) {
         return {
           success: false,
