@@ -13,6 +13,7 @@ export type FormStatus = "idle" | "loading" | "success" | "error";
 
 export function useClientRegistrationForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
+  const [errorKey, setErrorKey] = useState<string | null>(null);
 
   const tForm = useTranslations("Form");
   const tSchema = useTranslations("Schema");
@@ -30,6 +31,7 @@ export function useClientRegistrationForm() {
 
   const onSubmit = async (data: ClientRegistrationInput) => {
     setStatus("loading");
+    setErrorKey(null);
     try {
       const result = await createClientAction(data);
       if (result.success) {
@@ -37,19 +39,27 @@ export function useClientRegistrationForm() {
         form.reset();
       } else {
         setStatus("error");
+        if (result.error === "CLIENT_ALREADY_EXISTS") {
+          setErrorKey("conflictErrorMessage");
+        } else {
+          setErrorKey("errorMessage");
+        }
       }
     } catch {
       setStatus("error");
+      setErrorKey("errorMessage");
     }
   };
 
   const onReset = () => {
     setStatus("idle");
+    setErrorKey(null);
   };
 
   return {
     form,
     status,
+    errorKey,
     onSubmit,
     onReset,
     tForm,

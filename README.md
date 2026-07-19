@@ -137,6 +137,16 @@ docker-compose run --rm web npm run test
 
 ---
 
+## 🛡️ Segurança (Prevenção de Enumerabilidade de Usuários)
+
+No fluxo de cadastro de clientes, aplicamos uma prática recomendada de segurança para evitar o vazamento de dados de existência de contas (*User Enumeration*):
+- **Tratamento Seguro de Conflitos**: Quando o usuário tenta se cadastrar utilizando um **CPF** ou **E-mail** que já existem no banco de dados, o backend lança as exceções de domínio apropriadas (`ClientAlreadyExistsException` e `ClientEmailAlreadyExistsException`).
+- **Mapeamento na Camada de Integração (Server Action)**: O Server Action do Next.js intercepta esses erros específicos no lado do servidor e os unifica sob um código comum (`CLIENT_ALREADY_EXISTS`), retornando uma resposta genérica para o navegador.
+- **Mensagem Amigável e Segura**: O frontend exibe uma mensagem unificada: *"Não foi possível realizar o cadastro. O CPF ou E-mail informado já está em uso."*. Isso impede que um atacante verifique de forma isolada se um CPF ou E-mail específico está registrado no sistema, enquanto ainda fornece um feedback claro e acionável ao usuário legítimo.
+- **Erros Inesperados**: Erros de rede ou erros internos do servidor (500) continuam exibindo a mensagem padrão de erro inesperado: *"Ocorreu um erro ao realizar o cadastro. Tente novamente."*.
+
+---
+
 ## 🗄️ Banco de Dados
 
 O PostgreSQL é iniciado automaticamente via Docker. As credenciais padrão (para ambiente local) são:

@@ -70,6 +70,29 @@ describe('useClientRegistrationForm', () => {
     });
 
     expect(result.current.status).toBe('error');
+    expect(result.current.errorKey).toBe('errorMessage');
+  });
+
+  it('should update status to error and set conflictErrorMessage errorKey on duplicate submit', async () => {
+    (createClientAction as jest.Mock).mockResolvedValueOnce({
+      success: false,
+      error: 'CLIENT_ALREADY_EXISTS',
+    });
+
+    const { result } = renderHook(() => useClientRegistrationForm());
+
+    await act(async () => {
+      await result.current.onSubmit({
+        fullName: 'John Doe',
+        cpf: '123.456.789-00',
+        email: 'john@example.com',
+        favoriteColor: 'blue',
+        observations: 'Some text',
+      });
+    });
+
+    expect(result.current.status).toBe('error');
+    expect(result.current.errorKey).toBe('conflictErrorMessage');
   });
 
   it('should update status to error on exception', async () => {
@@ -88,12 +111,13 @@ describe('useClientRegistrationForm', () => {
     });
 
     expect(result.current.status).toBe('error');
+    expect(result.current.errorKey).toBe('errorMessage');
   });
 
-  it('should reset status to idle when onReset is called', async () => {
+  it('should reset status to idle and errorKey to null when onReset is called', async () => {
     (createClientAction as jest.Mock).mockResolvedValueOnce({
-      success: true,
-      data: { id: '123' },
+      success: false,
+      error: 'CLIENT_ALREADY_EXISTS',
     });
 
     const { result } = renderHook(() => useClientRegistrationForm());
@@ -108,12 +132,14 @@ describe('useClientRegistrationForm', () => {
       });
     });
 
-    expect(result.current.status).toBe('success');
+    expect(result.current.status).toBe('error');
+    expect(result.current.errorKey).toBe('conflictErrorMessage');
 
     act(() => {
       result.current.onReset();
     });
 
     expect(result.current.status).toBe('idle');
+    expect(result.current.errorKey).toBeNull();
   });
 });

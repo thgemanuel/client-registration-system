@@ -43,6 +43,13 @@ docker-compose run --rm api npm run typeorm:run-migrations
 
 ---
 
+## 🛡️ Segurança (Tratamento de Exceções de Domínio)
+
+- A API retorna exceções de domínio granulares (`ClientAlreadyExistsException` para CPF duplicado e `ClientEmailAlreadyExistsException` para e-mail duplicado) para permitir controle e rastreamento internos precisos.
+- Contudo, para fins de segurança (evitar *User Enumeration*), as camadas de apresentação pública (como o Web App integrado) unificam esses erros em uma resposta comum de conflito, evitando expor qual credencial específica já está cadastrada para o cliente final.
+
+---
+
 ## 🧪 Testes
 
 ### Configuração

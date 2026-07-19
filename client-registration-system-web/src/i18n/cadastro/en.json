@@ -18,6 +18,7 @@
     "successTitle": "Registration successful!",
     "successMessage": "Your data has been received. Thank you for registering!",
     "newRegistration": "Register again",
-    "errorMessage": "An error occurred while registering. Please try again."
+    "errorMessage": "An error occurred while registering. Please try again.",
+    "conflictErrorMessage": "Registration could not be completed. The provided CPF or Email is already in use."
   }
 }

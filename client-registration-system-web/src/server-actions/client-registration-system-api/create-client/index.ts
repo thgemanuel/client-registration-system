@@ -23,8 +23,21 @@ export async function createClientAction(
 
     if (!response.ok) {
       // Backend returns validation errors in data.errors[] 
-      // We will take the first error reason, or a generic message.
-      const errorMsg = data?.errors?.[0]?.reason || 'Erro ao salvar cliente no banco de dados.';
+      // We will check if it is a domain conflict error to handle it securely.
+      const firstError = data?.errors?.[0];
+      const errorCode = firstError?.code;
+
+      if (
+        errorCode === "ClientAlreadyExistsException" ||
+        errorCode === "ClientEmailAlreadyExistsException"
+      ) {
+        return {
+          success: false,
+          error: "CLIENT_ALREADY_EXISTS",
+        };
+      }
+
+      const errorMsg = firstError?.reason || 'Erro ao salvar cliente no banco de dados.';
       return {
         success: false,
         error: errorMsg,

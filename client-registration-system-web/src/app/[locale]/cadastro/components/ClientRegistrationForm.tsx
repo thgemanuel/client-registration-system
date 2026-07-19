@@ -15,7 +15,7 @@ import {
 } from "@/shared/components/ui/card";
 
 export function ClientRegistrationForm() {
-  const { form, status, onSubmit, onReset, tForm } = useClientRegistrationForm();
+  const { form, status, errorKey, onSubmit, onReset, tForm } = useClientRegistrationForm();
 
   if (status === "success") {
     return <ClientRegistrationSuccess onReset={onReset} />;
@@ -48,7 +48,9 @@ export function ClientRegistrationForm() {
 
             {/* Erro geral */}
             {status === "error" && (
-              <p className="text-sm text-destructive text-center">{tForm("errorMessage")}</p>
+              <p className="text-sm text-destructive text-center">
+                {tForm(errorKey || "errorMessage")}
+              </p>
             )}
           </form>
         </Form>

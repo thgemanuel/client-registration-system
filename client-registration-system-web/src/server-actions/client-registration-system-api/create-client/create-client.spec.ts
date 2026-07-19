@@ -61,6 +61,48 @@ describe('createClientAction', () => {
     expect(result.error).toBe(mockErrorResponse.errors[0].reason);
   });
 
+  it('should return CLIENT_ALREADY_EXISTS when receiving ClientAlreadyExistsException from the API', async () => {
+    const mockErrorResponse = {
+      errors: [
+        {
+          code: 'ClientAlreadyExistsException',
+          reason: 'Este CPF já está cadastrado',
+        },
+      ],
+    };
+
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: false,
+      json: async () => mockErrorResponse,
+    });
+
+    const result = await createClientAction({} as any);
+
+    expect(result.success).toBe(false);
+    expect(result.error).toBe('CLIENT_ALREADY_EXISTS');
+  });
+
+  it('should return CLIENT_ALREADY_EXISTS when receiving ClientEmailAlreadyExistsException from the API', async () => {
+    const mockErrorResponse = {
+      errors: [
+        {
+          code: 'ClientEmailAlreadyExistsException',
+          reason: 'Este E-mail já está cadastrado',
+        },
+      ],
+    };
+
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: false,
+      json: async () => mockErrorResponse,
+    });
+
+    const result = await createClientAction({} as any);
+
+    expect(result.success).toBe(false);
+    expect(result.error).toBe('CLIENT_ALREADY_EXISTS');
+  });
+
   it('should return a generic error message when fetch throws an exception', async () => {
     (global.fetch as jest.Mock).mockRejectedValueOnce(new Error('Network error'));
 

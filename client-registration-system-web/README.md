@@ -47,6 +47,15 @@ A aplicação estará disponível em **http://localhost:3001**.
 
 ---
 
+## 🛡️ Segurança (Tratamento de Erros e Prevenção de Enumerabilidade)
+
+Para mitigar ataques de enumeração de usuários (*User Enumeration*), onde um atacante tenta descobrir se determinado CPF ou E-mail está cadastrado na base de dados:
+- O **Server Action** (`createClientAction`) mapeia erros específicos do backend (`ClientAlreadyExistsException` e `ClientEmailAlreadyExistsException`) para um identificador de erro único e genérico: `CLIENT_ALREADY_EXISTS`.
+- O hook de formulário traduz esse erro para a chave `conflictErrorMessage`, exibindo para o usuário a mensagem: *"Não foi possível realizar o cadastro. O CPF ou E-mail informado já está em uso."* (ou a versão em inglês, conforme o idioma selecionado).
+- Isso garante que a aplicação sinalize a impossibilidade do cadastro devido a dados duplicados sem revelar qual campo específico causou a colisão.
+
+---
+
 ## 🧪 Testes
 
 ### Configuração
